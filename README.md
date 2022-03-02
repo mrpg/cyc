@@ -6,7 +6,7 @@ As long as the documentation is lacking, I suggest the following: To learn how t
 
 ## Known bugs
 
-1. Files included from templates (such as the footer) cannot contain fields, but includes of ordinary pages can (as is evident with mtime in `content/index.html`).
+None
 
 ## License
 

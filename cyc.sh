@@ -55,17 +55,17 @@ apply_once () {
     # to public/$1. This function loops until no fields or includes are
     # left in the resulting file.
 
-    fields=$(grep -o "{{!![^}]*!!}}" "$2" |
-        sort |
-        uniq |
-        sed 's/{{!!//g' | sed 's/!!}}//g')
-
     target="public/$1"
 
     cp "$2" "$target"
 
     while needs_templating "$target"
     do
+        fields=$(grep -o "{{!![^}]*!!}}" "$target" |
+            sort |
+            uniq |
+            sed 's/{{!!//g' | sed 's/!!}}//g')
+
         echo "$fields" |
             while IFS= read -r one_field
             do
