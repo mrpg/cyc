@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>My website: {{!!title!!}}</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="cyc"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{##.slab##}}/style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>My website</h1>
+
+            <nav>
+                {{##menu.html##}}
+            </nav>
+        </header>
+
+        <main>
+            <h2>{{!!title!!}}</h2>
+            <p><i>Last updated:</i> {{!!mtime!!}}</p>
+            
+            {{!!body!!}}
+        </main>
+
+        <footer>
+            {{##footer.html##}}
+        </footer>
+    </body>
+</html>
