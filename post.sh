@@ -8,13 +8,15 @@ set -eu
 find public -type f |
     while IFS= read -r file
     do
-        gzip < "$file" > "$file.gz"
+        gzip < "$file" > "$file.gz" &
     done
+
+wait
 
 # Upload website to server.
 
 # mv public example.com
-# rsync -a example.com mg.sb:/srv/http
+# rsync --delete --checksum -az example.com YOURSERVERHERE:/srv/http
 # rm -rf example.com
 
 # Etc.

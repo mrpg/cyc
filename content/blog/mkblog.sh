@@ -1,7 +1,7 @@
 #!/bin/sh
 
 {
-    echo "<ul id='posts'>"
+    echo "<ol id='posts' reversed>"
 
     {
         find -L . -type f -name '*.html' |
@@ -22,5 +22,5 @@
             echo "<li><a href='{{##.slab##}}/blog/$path'>$title</a> ($mtime)</li>"
         done
 
-    echo "</ul>"
+    echo "</ol>"
 } > index.html.posts

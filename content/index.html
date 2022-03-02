@@ -11,7 +11,10 @@
 <ol>
     <li>&hellip; the folder of the source file,</li>
     <li>&hellip; <tt>template/</tt>,</li>
+    <li>&hellip; <tt>static/</tt>,</li>
     <li>&hellip; in the present working directory.</li>
 </ol>
 
 <p>The latter allows you include any file using absolute paths. For example, the hostname of the device that generated this page was <b>{{##/etc/hostname##}}</b>.</p>
+
+<p>In this example setup, the "Last updated" field (normally stored in <tt>file.html.mtime</tt>) can be overriden by writing to <tt>file.html.utime</tt>. See the current page for an example ({{!!mtime!!}}). <tt>pre.sh</tt> will then use <tt>file.html.utime</tt>. Of course, it is not at all mandatory to use the "Last updated" field. Feel free to just remove {{&#33;&#33;mtime&#33;&#33;}} from your templates.</p>

@@ -37,6 +37,7 @@ apply_includes () {
 
             origin="$2/$one_include"
             [ -f "$origin" ] || origin="template/$one_include"
+            [ -f "$origin" ] || origin="static/$one_include"
             [ -f "$origin" ] || origin="$one_include"
 
             [ -f "$origin" ] || {
