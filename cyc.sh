@@ -2,10 +2,45 @@
 
 set -eu
 
+apply_exec () {
+    # Replace execution marks with the output of the command in file
+    # $1, where $2 is the root name of the file.
+
+    tmpout=$(mktemp)
+
+    cp "$1" "$tmpout"
+
+    execs=$(grep -o "{{^^[^}]*^^}}" "$tmpout" |
+        sort |
+        uniq |
+        sed 's/\^//g' | sed 's/{//g' | sed 's/}//g')
+
+    echo "$execs" |
+        while IFS= read -r one_exec
+        do
+            [ -z "$one_exec" ] && continue
+            cmdout=$(mktemp)
+
+            echo "CYC_EXEC: '$one_exec' ($2)..." >&2
+            (
+                export CYC_FILE=$2
+
+                exec "$one_exec"
+            ) > "$cmdout" || {
+                bail 2 "Error: Could not run '$one_exec'. Does it contain a space? Commands may not have arguments in cyc templates. You should write a shell script that can be called in a standalone manner."
+            }
+
+            replace_in_place "$tmpout" "{{^^""$one_exec""^^}}" "$cmdout"
+            rm -f "$cmdout"
+        done
+
+    mv "$tmpout" "$1"
+}
+
 apply_includes () {
     # Replace inclusion marks ("includes") with the referenced file in
     # file $1, where $2 is a preferred search path for included files.
-    # If $2/included does not exist, attempt to use template/included.
+    # If $2/included does not exist, attempt to use template/included, etc.
 
     tmpout=$(mktemp)
 
@@ -72,6 +107,7 @@ apply_once () {
         replace_in_place "$target" "{{!!body!!}}" "content/$1"
 
         apply_includes "$target" "$(dirname "content/$1")"
+        apply_exec "$target" "$1"
     done
 }
 
