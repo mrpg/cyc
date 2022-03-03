@@ -17,7 +17,7 @@ descend:
 		done
 
 generate:
-	./cyc.sh
+	./cyc.sh '*.html'
 
 post:
 	./post.sh

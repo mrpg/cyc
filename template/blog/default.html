@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>My website's blog: {{!!title!!}}</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="cyc"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{##.slab##}}/style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>My website's blog</h1>
+
+            <nav>
+                <!-- note again how you can get rid of the "index.html" -->
+                <a href="{{##.slab##}}/index.html">Back to the homepage</a>
+                <a href="{{##.slab##}}/blog/index.html">Blog overview</a>
+            </nav>
+        </header>
+
+        <main>
+            <h2>{{!!title!!}}</h2>
+            <p><i>Last updated:</i> {{!!mtime!!}}</p>
+            <p><b>This is a blog entry whose template is in <tt>template/blog/default.html</tt>. <tt>cyc</tt> can apply templates from subdirectories that correspond to the structure of <tt>content/</tt>.</b></p>
+            
+            {{!!body!!}}
+        </main>
+
+        <footer>
+            {{##footer.html##}}
+        </footer>
+    </body>
+</html>

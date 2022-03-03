@@ -2,20 +2,6 @@
 
 set -eu
 
-apply_default () {
-    # Apply the default theme $2 to all files with the filename pattern
-    # $1 in subdirectory content/.
-
-    find -L content -type f -name "$1" |
-        cut -d'/' -f2- |
-        while IFS= read -r sourcefile
-        do
-            [ -f "content/$sourcefile.template" ] && continue
-
-            apply_once "$sourcefile" "$2"
-        done
-}
-
 apply_includes () {
     # Replace inclusion marks ("includes") with the referenced file in
     # file $1, where $2 is a preferred search path for included files.
@@ -75,7 +61,7 @@ apply_once () {
                 origin="content/$1.$one_field"
 
                 [ -f "$origin" ] || {
-                    bail 3 "Error: $origin does not exist."
+                    bail 3 "Error: $origin was not found in content/ or meta/."
                 }
 
                 replace_in_place "$target" "{{!!""$one_field""!!}}" "$origin"
@@ -120,6 +106,29 @@ replace_in_place () {
     mv "$tmpf" "$1"
 }
 
+resolve_template () {
+    # Find the template that should be applied to $1. First, checks if
+    # content/$1.template exists. If not, check for default templates,
+    # first in any corresponding subdirectory of template/, then in
+    # the parent directories.
+
+    cfile="content/$1"
+    ext=$(echo "$1" | extension)
+
+    [ -f "$cfile.template" ] && cat "$cfile.template" && return 0
+
+    while :
+    do
+        cfile=$(dirname "$cfile")
+        candidate="$(echo "$cfile" | sed 's/^content//g')/default.$ext"
+        [ -f "template/$candidate" ] && echo "$candidate" && return 0
+
+        [ "$cfile" = "content" ] && break
+    done
+
+    echo "default.$ext" && return 1
+}
+
 unext () {
     # Remove extensions from the filenames in stdin
 
@@ -143,18 +152,20 @@ find -L content -type d |
         mkdir -p "public/$sub"
     done
 
-# Apply each default template to matching content/ files
-find -L template -type f -name 'default[^}]*' |
-    extension |
-    while IFS= read -r filetype
-    do
-        apply_default '*.'"$filetype" "template/default.$filetype"
-    done
+# To each file in content/, apply template
+for pattern in "$@"
+do
+    find -L content -type f -name "$pattern" |
+        cut -d'/' -f2- |
+        while IFS= read -r source
+        do
+            [ -z "$source" ] && continue
 
-# Apply custom templates
-find -L content -type f -name '*.template' |
-    cut -d'/' -f2- |
-    while IFS= read -r custom
-    do
-        apply_once "$(echo "$custom" | unext)" "template/$(cat "content/$custom")"
-    done
+            template=$(resolve_template "$source")
+
+            echo "Apply $template to $source."
+
+            [ -f "template/$template" ] && \
+                apply_once "$source" "template/$template"
+        done
+done
