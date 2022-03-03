@@ -10,6 +10,7 @@
 
 <ol>
     <li>&hellip; the folder of the source file,</li>
+    <li>&hellip; <tt>meta/</tt>,</li>
     <li>&hellip; <tt>template/</tt>,</li>
     <li>&hellip; <tt>static/</tt>,</li>
     <li>&hellip; in the present working directory.</li>
@@ -17,6 +18,6 @@
 
 <p>The latter allows you include any file using absolute paths. For example, the hostname of the device that generated this page was <b>{{##/etc/hostname##}}</b>.</p>
 
-<p>In this example setup, the "Last updated" field (normally stored in <tt>file.html.mtime</tt>) can be overriden by writing to <tt>file.html.utime</tt>. See the current page for an example ({{!!mtime!!}}). <tt>pre.sh</tt> will then use <tt>file.html.utime</tt>. Of course, it is not at all mandatory to use the "Last updated" field. Feel free to just remove {{&#33;&#33;mtime&#33;&#33;}} from your templates.</p>
+<p>In this example setup, the "Last updated" field (normally stored in <tt>file.html.mtime</tt>) can be overriden by writing to <tt>file.html.utime</tt>. See the current page for an example ({{!!mtime!!}}). <tt>pre.sh</tt> will then use <tt>file.html.utime</tt>. Of course, it is not at all mandatory to use the "Last updated" field. Feel free to just remove <tt>{{&#33;&#33;mtime&#33;&#33;}}</tt> from your templates. Fields like <tt>mtime</tt> are replaced with the content of <tt>file.html.fieldname</tt>, which can be in <tt>meta/</tt> or <tt>content/</tt>. It is recommended to put the field data into <tt>meta/</tt> to prevent cluttering <tt>content/</tt>.</p>
 
 <p>For blog entries, the "Last updated" field might be more important. When no custom template is specified in <tt>file.html.template</tt> and multiple default templates are available, <tt>cyc</tt> tries to match the source file with a template in <tt>template/</tt>. For example, <tt>content/blog/first.html</tt> will <a href="blog/first.html">use</a> the template in <tt>template/blog/default.html</tt>. However, if only <tt>template/default.html</tt> existed, that template would be used instead. Try it out yourself! Note how <tt>content/blog/index.html</tt> has a custom <tt>.template</tt> file to ensure that it <a href="blog/index.html">uses</a> the non-blog default.</p>

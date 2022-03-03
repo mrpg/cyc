@@ -8,9 +8,15 @@ set -eu
 find content -name '*.html' |
     while IFS= read -r file
     do
+        mfile=$(echo "$file" | sed 's/^content/meta/g')
+        
         if [ ! -f "$file.utime" ]; then
-            bin/mtime "$file" > "$file.mtime"
+            bin/mtime "$file" > "$mfile.mtime"
+
+            # Alternatively,
+            # git log -n 1 --pretty=format:%ad \
+            #   --date=format:'%Y-%m-%d %H:%M' -- "$file" > "$mfile.mtime"
         else
-            cp "$file.utime" "$file.mtime"
+            cp "$file.utime" "$mfile.mtime"
         fi
     done

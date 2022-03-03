@@ -22,6 +22,7 @@ apply_includes () {
             [ -z "$one_include" ] && continue
 
             origin="$2/$one_include"
+            [ -f "$origin" ] || origin="meta/$one_include"
             [ -f "$origin" ] || origin="template/$one_include"
             [ -f "$origin" ] || origin="static/$one_include"
             [ -f "$origin" ] || origin="$one_include"
@@ -58,7 +59,8 @@ apply_once () {
                 [ -z "$one_field" ] && continue
                 [ "$one_field" = "body" ] && continue
 
-                origin="content/$1.$one_field"
+                origin="meta/$1.$one_field"
+                [ -f "$origin" ] || origin="content/$1.$one_field"
 
                 [ -f "$origin" ] || {
                     bail 3 "Error: $origin was not found in content/ or meta/."
@@ -108,13 +110,15 @@ replace_in_place () {
 
 resolve_template () {
     # Find the template that should be applied to $1. First, checks if
-    # content/$1.template exists. If not, check for default templates,
-    # first in any corresponding subdirectory of template/, then in
-    # the parent directories.
+    # {meta/,content/}$1.template exists. If not, check for default
+    # templates first in any corresponding subdirectory of template/, then
+    # in the parent directories.
 
     cfile="content/$1"
+    mfile="meta/$1"
     ext=$(echo "$1" | extension)
 
+    [ -f "$mfile.template" ] && cat "$mfile.template" && return 0
     [ -f "$cfile.template" ] && cat "$cfile.template" && return 0
 
     while :

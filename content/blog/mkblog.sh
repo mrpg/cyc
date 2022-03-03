@@ -1,5 +1,7 @@
 #!/bin/sh
 
+meta="../../meta/blog"
+
 {
     echo "<ol id='posts' reversed>"
 
@@ -8,8 +10,8 @@
             grep -v "index.html\$" |
             while IFS= read -r entry; do
                 [ -z "$entry" ] && continue
-                mtime=$(cat "$entry.mtime")
-                title=$(cat "$entry.title")
+                mtime=$(cat "$meta/$entry.mtime")
+                title=$(cat "$meta/$entry.title")
 
                 printf '%s\t%s\t%s\n' "$mtime" "$entry" "$title"
             done
@@ -23,4 +25,4 @@
         done
 
     echo "</ol>"
-} > index.html.posts
+} > "$meta/index.html.posts"
