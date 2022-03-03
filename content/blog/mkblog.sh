@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eu
+
 meta="../../meta/blog"
 
 {
@@ -10,7 +12,7 @@ meta="../../meta/blog"
             grep -v "index.html\$" |
             while IFS= read -r entry; do
                 [ -z "$entry" ] && continue
-                mtime=$(cat "$meta/$entry.mtime")
+                mtime=$(cd ../.. && CYC_FILE="blog/$entry" bin/last_updated.sh) # FIXME: HACK
                 title=$(cat "$meta/$entry.title")
 
                 printf '%s\t%s\t%s\n' "$mtime" "$entry" "$title"
