@@ -1,4 +1,3 @@
 public
-*.mtime
 bin/replace
 bin/mtime
