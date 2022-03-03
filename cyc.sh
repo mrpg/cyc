@@ -167,8 +167,6 @@ do
 
             template=$(resolve_template "$source")
 
-            echo "Apply $template to $source."
-
             [ -f "template/$template" ] && \
                 apply_once "$source" "template/$template"
         done
