@@ -15,6 +15,7 @@ wait
 
 # Upload website to server.
 
+# chmod -R a+r public # this line may be necessary, but it could be dangerous
 # mv public example.com
 # rsync --delete --checksum -az example.com YOURSERVERHERE:/srv/http
 # rm -rf example.com

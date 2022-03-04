@@ -2,6 +2,9 @@
 
 set -eu
 
+markopen="{{"
+markclos="}}"
+
 apply_exec () {
     # Replace execution marks with the output of the command in file
     # $1, where $2 is the root name of the file.
@@ -10,10 +13,10 @@ apply_exec () {
 
     cp "$1" "$tmpout"
 
-    execs=$(grep -o "{{^^[^}]*^^}}" "$tmpout" |
+    execs=$(grep -o "$markopen""\^\^[^\^]*\^\^$markclos" "$tmpout" |
         sort |
         uniq |
-        sed 's/\^//g' | sed 's/{//g' | sed 's/}//g')
+        sed 's/^'"$markopen"'\^\^//g' | sed 's/\^\^'"$markclos"'$//g')
 
     echo "$execs" |
         while IFS= read -r one_exec
@@ -30,7 +33,7 @@ apply_exec () {
                 bail 2 "Error: Could not run '$one_exec'. Does it contain a space? Commands may not have arguments in cyc templates. You should write a shell script that can be called in a standalone manner."
             }
 
-            replace_in_place "$tmpout" "{{^^""$one_exec""^^}}" "$cmdout"
+            replace_in_place "$tmpout" "$markopen""^^""$one_exec""^^$markclos" "$cmdout"
             rm -f "$cmdout"
         done
 
@@ -46,10 +49,10 @@ apply_includes () {
 
     cp "$1" "$tmpout"
 
-    includes=$(grep -o "{{##[^}]*##}}" "$tmpout" |
+    includes=$(grep -o "$markopen""##[^#]*##$markclos" "$tmpout" |
         sort |
         uniq |
-        sed 's/#//g' | sed 's/{//g' | sed 's/}//g')
+        sed 's/^'"$markopen"'##//g' | sed 's/##'"$markclos"'$//g')
 
     echo "$includes" |
         while IFS= read -r one_include
@@ -66,7 +69,7 @@ apply_includes () {
                 bail 2 "Error: Included file $one_include not found (last checked: $origin)."
             }
 
-            replace_in_place "$tmpout" "{{##""$one_include""##}}" "$origin"
+            replace_in_place "$tmpout" "$markopen""##""$one_include""##$markclos" "$origin"
         done
 
     mv "$tmpout" "$1"
@@ -83,10 +86,10 @@ apply_once () {
 
     while needs_templating "$target"
     do
-        fields=$(grep -o "{{!![^}]*!!}}" "$target" |
+        fields=$(grep -o "$markopen""!![^!]*!!$markclos" "$target" |
             sort |
             uniq |
-            sed 's/{{!!//g' | sed 's/!!}}//g')
+            sed 's/^'"$markopen"'!!//g' | sed 's/!!'"$markclos"'$//g')
 
         echo "$fields" |
             while IFS= read -r one_field
@@ -101,10 +104,10 @@ apply_once () {
                     bail 3 "Error: $origin was not found in content/ or meta/."
                 }
 
-                replace_in_place "$target" "{{!!""$one_field""!!}}" "$origin"
+                replace_in_place "$target" "$markopen""!!""$one_field""!!$markclos" "$origin"
             done
 
-        replace_in_place "$target" "{{!!body!!}}" "content/$1"
+        replace_in_place "$target" "$markopen""!!body!!$markclos" "content/$1"
 
         apply_includes "$target" "$(dirname "content/$1")"
         apply_exec "$target" "$1"
@@ -130,7 +133,9 @@ needs_templating () {
     # includes.
 
     {
-        grep "{{!![^}]*!!}}" "$1" || grep -o "{{##[^}]*##}}" "$1"
+        grep "$markopen""!![^!]*!!$markclos" "$1" || \
+            grep "$markopen""##[^#]*##$markclos" "$1" || \
+            grep "$markopen""\^\^[^\^]*\^\^$markclos" "$1"
     } > /dev/null 2>&1
 }
 
@@ -207,3 +212,18 @@ do
                 apply_once "$source" "template/$template"
         done
 done
+
+# Copyright 2022 Max R. P. Grossmann
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or (at
+# your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
