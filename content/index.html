@@ -13,15 +13,15 @@
     <li>&hellip; <tt>meta/</tt>,</li>
     <li>&hellip; <tt>template/</tt>,</li>
     <li>&hellip; <tt>static/</tt>,</li>
-    <li>&hellip; in the present working directory.</li>
+    <li>&hellip; in the present working directory of <tt>cyc</tt>.</li>
 </ol>
 
 <p>The latter allows you include any file using absolute paths.</p>
 
 <p>You can also run commands with <tt>{{&#94;&#94;command&#94;&#94;}}</tt>. However, this feature is quite limited: For reasons of simplicity and safety, <tt>cyc</tt> only allows a single command without any arguments. This means that you might have to write your own shell script to accomplish more complex tasks. The name of the calling page in <tt>content/</tt> is supplied via the environment variable <tt>CYC_FILE</tt>. For example, the reversed title of this page is <b>{{^^bin/reverse_title.sh^^}}</b>. This is accomplished by the script <tt>bin/reverse_title.sh</tt>, which you should check out.</p>
 
-<p>In this example setup, the default value for the "Last updated" field can be overriden by writing to <tt>file.html.utime</tt>. The value is obtained from running the script <tt>bin/last_updated.sh</tt> using the above methodology. See this page for an example ({{^^bin/last_updated.sh^^}}). If the value is not overriden, the script defaults to the modification time. Inside the script, there is also an example on how to obtain this time from git commits. Of course, it is not at all mandatory to use the "Last updated" field. Feel free to just remove <tt>{{&#94;&#94;mtime&#94;&#94;}}</tt> from your templates or to customize <tt>bin/last_updated.sh</tt> utterly so that it fits your needs.</p>
+<p>In this example setup, the default value for the "Last updated" field can be overriden by writing to <tt>file.html.utime</tt>. The value is obtained from running the script <tt>bin/last_updated.sh</tt> using the above methodology. See this page for an example ({{^^bin/last_updated.sh^^}}). If the value is not overriden, the script defaults to the modification time. Inside the script, there is also an example on how to obtain this time from git commits. Of course, it is not at all mandatory to use the "Last updated" field. Feel free to just remove <tt>{{&#94;&#94;bin/last_updated.sh&#94;&#94;}}</tt> from your templates or to customize <tt>bin/last_updated.sh</tt> utterly so that it fits your needs.</p>
 
-<p>Fields like <tt>title</tt> are replaced with the content of <tt>file.html<b>.title</b></tt>, which can be in <tt>meta/</tt> or <tt>content/</tt>. It is recommended to put field data into <tt>meta/</tt> to prevent cluttering <tt>content/</tt>.</p>
+<p>Fields like <tt>{{&#33;&#33;title&#33;&#33;}}</tt> are replaced with the content of <tt>file.html<b>.title</b></tt>, which can be in <tt>meta/</tt> or <tt>content/</tt>. It is recommended to put field data into <tt>meta/</tt> to prevent cluttering <tt>content/</tt>.</p>
 
 <p>For blog entries, the "Last updated" field might be more important. When no custom template is specified in <tt>file.html.template</tt> and multiple default templates are available, <tt>cyc</tt> tries to match the source file with a template in <tt>template/</tt>. For example, <tt>content/blog/first.html</tt> will <a href="blog/first.html">use</a> the template in <tt>template/blog/default.html</tt>. However, if only <tt>template/default.html</tt> existed, that template would be used instead. Try it out yourself! Note how <tt>content/blog/index.html</tt> has a custom <tt>.template</tt> file to ensure that it <a href="blog/index.html">uses</a> the non-blog default.</p>
