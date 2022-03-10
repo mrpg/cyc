@@ -101,7 +101,7 @@ apply_once () {
                 [ -f "$origin" ] || origin="content/$1.$one_field"
 
                 [ -f "$origin" ] || {
-                    bail 3 "Error: $origin was not found in content/ or meta/."
+                    bail 3 "Error: $origin was not found (also not in meta/)."
                 }
 
                 replace_in_place "$target" "$markopen""!!""$one_field""!!$markclos" "$origin"
