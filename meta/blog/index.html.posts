@@ -1,5 +1,0 @@
-<ol id='posts' reversed>
-<li><a href='{{##.slab##}}/blog/./my_third_blog_post.html'>My third blog post</a> (2022-02-20 16:36)</li>
-<li><a href='{{##.slab##}}/blog/./my_second_post.html'>My second post</a> (2022-02-20 14:13)</li>
-<li><a href='{{##.slab##}}/blog/./first.html'>My first blog entry</a> (2022-02-20 14:13)</li>
-</ol>

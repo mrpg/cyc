@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 rev < "meta/$CYC_FILE.title"
 #           ^^^^^^^^^ this is supplied by cyc
