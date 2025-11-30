@@ -59,13 +59,23 @@ apply_exec () {
             cmdout=$(mktemp)
             temp_files+=("$cmdout")
 
-            echo "CYC_EXEC: '$one_exec' ($2)..." >&2
+            # Split into command and argument (if present)
+            read -r cmd arg rest <<< "$one_exec"
+
+            if [[ -n "$rest" ]]; then
+                bail 2 "Error: '$one_exec' has too many arguments. Commands may have at most one argument in cyc templates."
+            fi
+
+            echo "CYC_EXEC: '$cmd' ($2)..." >&2
             (
                 export CYC_FILE=$2
+                if [[ -n "$arg" ]]; then
+                    export CYC_ARG="$arg"
+                fi
 
-                exec "$one_exec"
+                exec "$cmd"
             ) > "$cmdout" || {
-                bail 2 "Error: Could not run '$one_exec'. Does it contain a space? Commands may not have arguments in cyc templates. You should write a shell script that can be called in a standalone manner."
+                bail 2 "Error: Could not run '$cmd'. Commands may have at most one argument in cyc templates. You should write a shell script that can be called in a standalone manner."
             }
 
             replace_in_place "$tmpout" "$markopen""^^""$one_exec""^^$markclos" "$cmdout"
