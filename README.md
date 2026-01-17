@@ -10,4 +10,6 @@ None
 
 ## License
 
-Unless otherwise noted, everything in this repository is released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html), or (at your option) any later version. However, **all files in static/, content/ and template/** are released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). This is to allow you to use these files as utterly unencumbered building blocks for your own website. Note that the GNU GPLv3 does not consider the output files in `public/` a derived work of `cyc`. This means that the output files in `public/` are not covered by the GNU GPLv3. Since the output files derive from CC0-licensed input, you are free to license the output files in whatever way you find appropriate, or not to license them at all.
+Unless otherwise noted, everything in this repository is released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html), or (at your option) any later version.
+
+However, **all files in static/, content/ and template/** are additionally released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). This is to allow you to use these files as utterly unencumbered building blocks for your own website.
