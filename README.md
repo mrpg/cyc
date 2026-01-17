@@ -4,6 +4,8 @@
 
 As long as the documentation is lacking, I suggest the following: To learn how to use `cyc`, just clone this repository and run `make`. Use your browser to navigate to `public/index.html` and inspect the output pages generated as well as the source files in `content/` and `template/`. At some point, I will add more documentation.
 
+[View the example website from this repository.](https://cdn.mg.sb/cyc/public/) [View another website built with cyc.](https://max.pm/)
+
 ## Known bugs
 
 None
