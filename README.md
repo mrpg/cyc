@@ -53,6 +53,4 @@ jobs:
 
 ## License
 
-Unless otherwise noted, everything in this repository is released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html), or (at your option) any later version.
-
-However, **all files in static/, content/ and template/** are additionally released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/). This is to allow you to use these files as utterly unencumbered building blocks for your own website.
+Everything in this repository is licensed under the **0BSD License** (Zero-Clause BSD). This applies retroactively. You are completely free to do anything with this code. No requirements, no attribution needed, no obligations of any kind. There is no warranty. See [LICENSE](LICENSE) for the complete 0BSD license text.
