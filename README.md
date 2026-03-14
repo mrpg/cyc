@@ -10,6 +10,47 @@ As long as the documentation is lacking, I suggest the following: To learn how t
 
 None
 
+## GitHub Actions workflow for deployment on GitHub Pages
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: make
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
 ## License
 
 Unless otherwise noted, everything in this repository is released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html), or (at your option) any later version.
