@@ -12,12 +12,14 @@ None
 
 ## GitHub Actions workflow for deployment on GitHub Pages
 
+Add this to `.github/workflows/deploy.yml` and enable “GitHub Actions” in the repository’s *Pages* settings.
+
 ```yaml
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main, master]
   workflow_dispatch:
 
 permissions:
