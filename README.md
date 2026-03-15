@@ -4,7 +4,7 @@
 
 As long as the documentation is lacking, I suggest the following: To learn how to use `cyc`, just clone this repository and run `make`. Use your browser to navigate to `public/index.html` and inspect the output pages generated as well as the source files in `content/` and `template/`. At some point, I will add more documentation.
 
-[View the example website from this repository.](https://cdn.mg.sb/cyc/public/) [View another website built with cyc.](https://max.pm/)
+[View the example website from this repository.](https://mrpg.github.io/) [View another website built with cyc.](https://max.pm/)
 
 ## Known bugs
 
@@ -12,7 +12,7 @@ None
 
 ## GitHub Actions workflow for deployment on GitHub Pages
 
-Add this to `.github/workflows/deploy.yml` and enable “GitHub Actions” in the repository’s *Pages* settings.
+Add this to `.github/workflows/deploy.yml` and enable “GitHub Actions” in the repository’s *Pages* settings. You may have to set “Deployment branches and tags” to “No restriction” in the repository’s *Environments* settings, `github-pages`.
 
 ```yaml
 name: Deploy to GitHub Pages
